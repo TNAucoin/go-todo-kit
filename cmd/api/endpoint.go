@@ -15,7 +15,8 @@ type removeRequest struct {
 }
 
 type addResponse struct {
-	err error
+	payload model
+	err     error
 }
 
 type removeResponse struct {
@@ -30,9 +31,10 @@ type getAllResponse struct {
 func makeAddEnpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		input := request.(addRequest)
-		err := s.add(input.Name)
+		payload, err := s.add(input.Name)
 		return &addResponse{
-			err: err,
+			payload: payload,
+			err:     err,
 		}, nil
 	}
 }
@@ -47,12 +49,12 @@ func makeRemoveEndpoint(s Service) endpoint.Endpoint {
 	}
 }
 
-func makeGetAllEndpoint(s Service) endpoint.Endpoint{
+func makeGetAllEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		res, err := s.getall()
-		return &getAllResponse {
+		return &getAllResponse{
 			payload: res,
-			err: err,
+			err:     err,
 		}, nil
 	}
 }

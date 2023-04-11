@@ -35,7 +35,10 @@ func decodeGetAllRequest(_ context.Context, r *http.Request) (interface{}, error
 
 func encodeAddResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	res := response.(*addResponse)
-	return json.NewEncoder(w).Encode(res.err)
+	if res.err != nil {
+		return json.NewEncoder(w).Encode(res.err)
+	}
+	return json.NewEncoder(w).Encode(res.payload)
 }
 
 func encodeRemoveResponse(_ context.Context, w http.ResponseWriter, repsonse interface{}) error {

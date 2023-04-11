@@ -31,8 +31,9 @@ func TestAdd(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			err := s.add(tc.args.model.Name)
+			resp, err := s.add(tc.args.model.Name)
 			assert.Equal(t, tc.err, err)
+			assert.Equal(t, tc.args.model.Name, resp.Name)
 		})
 	}
 }
